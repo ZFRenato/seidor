@@ -5,7 +5,7 @@ import { GetByIdAutomobileUseCase } from '../../../application/useCases/automobi
 import { DeleteAutomobileUseCase } from '../../../application/useCases/automobiles/DeleteAutomobileUseCase';
 import { UpdateAutomobileUseCase } from '../../../application/useCases/automobiles/UpdateAutomobileUseCase';
 import { ListAutomobileUseCase } from '../../../application/useCases/automobiles/ListAutomobileUseCase';
-import { InMemoryAutomobileRepository } from '../../../infrastructure/persistence/ImMemoryAutomobileRepository';
+import { InMemoryAutomobileRepository } from '../../../infrastructure/persistence/InMemoryAutomobileRepository';
 import { NotFoundError } from '../../../domain/error/AppError';
 
 const automobileRepository = new InMemoryAutomobileRepository();
