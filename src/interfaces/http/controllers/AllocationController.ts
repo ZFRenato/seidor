@@ -36,9 +36,9 @@ export class AllocationController {
 	}
 
 	static async finishAllocation(req: Request, res: Response) {
-		const { allocationId } = req.params;
+		const { id } = req.params;
 		try {
-			const allocation = await finishAllocationUseCase.handle({ allocationId });
+			const allocation = await finishAllocationUseCase.handle({ allocationId: id });
 			response.ok(res, allocation);
 		} catch (error) {
 			if (error instanceof BadRequestError) {
