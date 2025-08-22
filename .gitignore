@@ -1,0 +1,9 @@
+/node_modules
+/dist
+/coverage
+/logs
+/tmp
+/public
+/uploads
+/uploads/tmp
+/uploads/tmp/
