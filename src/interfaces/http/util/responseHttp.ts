@@ -1,52 +1,40 @@
+import { Response } from 'express';
+
+
 export const response = {
-	ok: <T>(data: T) => {
-		return {
-			statusCode: 200,
-			body: {
+	ok: <T>(res: Response, data: T) => {
+		res.status(200).json({
+			success: true,
+			timestamp: new Date().toISOString(),
+			data,
+		});
+	},
+	created: <T>(res: Response, data: T) => {
+		res.status(201).json({
 				success: true,
 				timestamp: new Date().toISOString(),
 				data,
-			}
-		};
+		});
 	},
-	created: <T>(data: T) => {
-		return {
-			statusCode: 201,
-			body: {
-				success: true,
-				timestamp: new Date().toISOString(),
-				data,
-			}
-		};
-	},
-	badRequest: <T>(data: T) => {
-		return {
-			statusCode: 400,
-			body: {
+	badRequest: <T>(res: Response, data: T) => {
+		res.status(400).json({
 				success: false,
 				timestamp: new Date().toISOString(),
 				data,
-			}
-		};
+		});
 	},
-	notFound: <T>(data: T) => {
-		return {
-			statusCode: 404,
-			body: {
+	notFound: <T>(res: Response, data: T) => {
+		res.status(404).json({
 				success: false,
 				timestamp: new Date().toISOString(),
 				data,
-			}
-		};
+		});
 	},
-	internalServerError: <T>(data: T) => {
-		return {
-			statusCode: 500,
-			body: {
+	internalServerError: <T>(res: Response, data: T) => {
+		res.status(500).json({
 				success: false,
 				timestamp: new Date().toISOString(),
 				data,
-			}
-		};
+		});
 	}
 };
