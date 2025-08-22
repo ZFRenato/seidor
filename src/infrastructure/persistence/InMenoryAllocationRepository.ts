@@ -1,4 +1,4 @@
-import { Allocation } from "../../domain/entities/Allocation";
+import { Allocation, AllocationStatus } from "../../domain/entities/Allocation";
 import { IAllocationRepository, IFiltersListAllocations } from "../../domain/repositories/allocationRepository";
 import { IPagination } from "../../util/IPagination";
 
@@ -40,5 +40,13 @@ export class InMemoryAllocationRepository implements IAllocationRepository {
 			limit,
 			totalPages: Math.ceil(total / limit),
 		};
+	}
+
+	async findByAllocationByDriverIdInProgress(driverId: string): Promise<Allocation | null> {
+		return this.allocations.find(allocation => allocation.driver.id === driverId && allocation.status === AllocationStatus.IN_PROGRESS) ?? null;
+	}
+
+	async findByAllocationByAutomobileIdInProgress(automobileId: string): Promise<Allocation | null> {
+		return this.allocations.find(allocation => allocation.automobile.id === automobileId && allocation.status === AllocationStatus.IN_PROGRESS) ?? null;
 	}
 }

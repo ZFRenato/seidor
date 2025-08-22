@@ -13,4 +13,6 @@ export interface IAllocationRepository {
 	getById(id: string): Promise<Allocation | null>;
 	update(id: string, allocation: Partial<Allocation>): Promise<void>;
 	list(args: IFiltersListAllocations): Promise<IPagination<Allocation>>;
+	findByAllocationByDriverIdInProgress(driverId: string): Promise<Allocation | null>;
+	findByAllocationByAutomobileIdInProgress(automobileId: string): Promise<Allocation | null>;
 }

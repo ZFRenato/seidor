@@ -2,12 +2,12 @@
   "name": "seidor",
   "version": "1.0.0",
   "description": "Teste tecnico seidor",
-  "main": "dist/interfaces/http/App.js",
+  "main": "dist/App.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "node dist/interfaces/http/App.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/interfaces/http/App.ts",
+    "start": "node dist/App.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/App.ts",
     "lint": "eslint 'src/**/*.ts'"
   },
   "author": "Renato Carvalho",
