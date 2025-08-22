@@ -1,0 +1,32 @@
+{
+  "name": "seidor",
+  "version": "1.0.0",
+  "description": "Teste tecnico seidor",
+  "main": "dist/interfaces/http/App.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "start": "node dist/interfaces/http/App.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/interfaces/http/App.ts",
+    "lint": "eslint 'src/**/*.ts'"
+  },
+  "author": "Renato Carvalho",
+  "license": "ISC",
+  "dependencies": {
+    "@types/uuid": "^10.0.0",
+    "express": "^5.1.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "eslint": "^9.33.0",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
