@@ -1,14 +1,6 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { App } from './interfaces/http/App';
 
-const app = express();
-const port = 3000;
+const app = new App(express(), new Router(), 3000);
 
-app.use(express.json());
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World from Express TypeScript API!');
-});
-
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+app.start();
