@@ -1,3 +1,4 @@
+import { IPagination } from "../../util/IPagination";
 import { Driver } from "../entities/Driver";
 
 export interface IDriverRepository {
@@ -5,6 +6,5 @@ export interface IDriverRepository {
 	update(driver: Driver): Promise<Driver>;
 	delete(id: string): Promise<void>;
 	getById(id: string): Promise<Driver | null>;
-	getByName(name: string): Promise<Driver | null>;
-	getAll(): Promise<Driver[]>;
+	list(filters: { name?: string, page?: number, limit?: number }): Promise<IPagination<Driver>>;
 }
