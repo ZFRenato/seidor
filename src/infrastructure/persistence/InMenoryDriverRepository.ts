@@ -18,13 +18,13 @@ export class InMemoryDriverRepository implements IDriverRepository {
 		}
 	}
 
-	async update(driver: Driver): Promise<Driver> {
+	async update(id: string, props: Partial<Driver>): Promise<Driver> {
 		try {
-			const existingDriver = this.drivers.find(d => d.id === driver.id);
+			const existingDriver = this.drivers.find(d => d.id === id);
 			if (!existingDriver) {
 				throw new Error('Driver not found');
 			}
-			existingDriver.name = driver.name;
+			existingDriver.name = props.name ?? existingDriver.name;
 			return existingDriver;
 		} catch (error) {
 			throw new Error(`InMemoryDriverRepository.update: ${error}`);
