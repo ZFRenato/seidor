@@ -1,6 +1,7 @@
 import express, { Express, Router } from 'express';
 import cors from 'cors';
 import { errorJson } from './middlewares/errorJson';
+import { errorHttp } from './middlewares/errorHttp';
 
 export class App {
   constructor(
@@ -23,6 +24,7 @@ export class App {
     this.express.use(express.urlencoded({ extended: true }));
     this.express.use(cors());
     this.routes();
+    this.express.use(errorHttp);
   }
 
   private listen(): void {

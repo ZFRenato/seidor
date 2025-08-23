@@ -6,7 +6,7 @@ import { DeleteAutomobileUseCase } from '../../../application/useCases/automobil
 import { UpdateAutomobileUseCase } from '../../../application/useCases/automobiles/UpdateAutomobileUseCase';
 import { ListAutomobileUseCase } from '../../../application/useCases/automobiles/ListAutomobileUseCase';
 import { InMemoryAutomobileRepository } from '../../../infrastructure/persistence/InMemoryAutomobileRepository';
-import { NotFoundError } from '../../../domain/error/AppError';
+
 
 const automobileRepository = InMemoryAutomobileRepository.getInstance();
 const getByIdAutomobileUseCase = new GetByIdAutomobileUseCase(automobileRepository);
@@ -34,16 +34,8 @@ export class AutomobileController {
 	static async updateAutomobile(req: Request, res: Response) {
 		const { id } = req.params;
 		const { brand, color, plate } = req.body;
-		try {
-			await updateAutomobileUseCase.handle({ id, props: { brand, color, plate } });
-			return response.ok(res, { message: 'Automobile updated successfully' });
-		} catch (error) {
-			if (error instanceof NotFoundError) {
-				return response.notFound(res, { message: error.message });
-			} else {
-				return response.internalServerError(res, error);
-			}
-		}
+		await updateAutomobileUseCase.handle({ id, props: { brand, color, plate } });
+		return response.ok(res, { message: 'Automobile updated successfully' });
 	}
 
 	static async listAutomobiles(req: Request, res: Response) {
@@ -54,16 +46,8 @@ export class AutomobileController {
 
 	static async deleteAutomobile(req: Request, res: Response) {
 		const { id } = req.params;	
-		try {
-			await deleteAutomobileUseCase.handle({ id });
-			return response.ok(res, { message: 'Automobile deleted successfully' });
-		} catch (error) {
-			if (error instanceof NotFoundError) {
-				return response.notFound(res, { message: error.message });
-			} else {
-				return response.internalServerError(res, error);
-			}
-		}
+		await deleteAutomobileUseCase.handle({ id });
+		return response.ok(res, { message: 'Automobile deleted successfully' });
 	}
 }
 

@@ -27,16 +27,8 @@ export class DriverController {
 	}
 	static async deleteDriver(req: Request, res: Response) {
 		const { id } = req.params;
-		try {
 			await deleteDriverUseCase.handle(id);
 			return response.ok(res, { message: `Driver ${id} deleted successfully` });
-		} catch (error) {
-			if (error instanceof NotFoundError) {
-				return response.notFound(res, { message: error.message });
-			} else {
-				return response.internalServerError(res, error);
-			}
-		}
 	}
 	static async getDriverById(req: Request, res: Response) {
 		const { id } = req.params;
