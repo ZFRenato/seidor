@@ -6,11 +6,13 @@ import { DeleteDriverUseCase } from '../../../application/useCases/drivers/Delet
 import { InMemoryDriverRepository } from '../../../infrastructure/persistence/InMenoryDriverRepository';
 import { UpdateDriverUseCase } from '../../../application/useCases/drivers/UpdateDriverUseCase';
 import { ListDriverUseCase } from '../../../application/useCases/drivers/ListDriverUseCase';
+import { InMemoryAllocationRepository } from '../../../infrastructure/persistence/InMenoryAllocationRepository';
 
 const driverRepository = InMemoryDriverRepository.getInstance();
+const allocationRepository = InMemoryAllocationRepository.getInstance();
 const getDriverByIdUseCase = new GetDriverByIdUseCase(driverRepository);
 const createDriverUseCase = new CreateDriverUseCase(driverRepository);
-const deleteDriverUseCase = new DeleteDriverUseCase(driverRepository, getDriverByIdUseCase);
+const deleteDriverUseCase = new DeleteDriverUseCase(driverRepository, getDriverByIdUseCase, allocationRepository);
 const updateDriverUseCase = new UpdateDriverUseCase(driverRepository, getDriverByIdUseCase);
 const listDriverUseCase = new ListDriverUseCase(driverRepository);
 

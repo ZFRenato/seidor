@@ -6,12 +6,14 @@ import { DeleteAutomobileUseCase } from '../../../application/useCases/automobil
 import { UpdateAutomobileUseCase } from '../../../application/useCases/automobiles/UpdateAutomobileUseCase';
 import { ListAutomobileUseCase } from '../../../application/useCases/automobiles/ListAutomobileUseCase';
 import { InMemoryAutomobileRepository } from '../../../infrastructure/persistence/InMemoryAutomobileRepository';
+import { InMemoryAllocationRepository } from '../../../infrastructure/persistence/InMenoryAllocationRepository';
 
 
 const automobileRepository = InMemoryAutomobileRepository.getInstance();
+const allocationRepository = InMemoryAllocationRepository.getInstance();
 const getByIdAutomobileUseCase = new GetByIdAutomobileUseCase(automobileRepository);
 const createAutomobileUseCase = new CreateAutomobileUseCase(automobileRepository);
-const deleteAutomobileUseCase = new DeleteAutomobileUseCase(automobileRepository, getByIdAutomobileUseCase);
+const deleteAutomobileUseCase = new DeleteAutomobileUseCase(automobileRepository, getByIdAutomobileUseCase, allocationRepository);
 const updateAutomobileUseCase = new UpdateAutomobileUseCase(automobileRepository, getByIdAutomobileUseCase);
 const listAutomobileUseCase = new ListAutomobileUseCase(automobileRepository);
 
