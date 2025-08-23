@@ -17,8 +17,7 @@ const listAutomobileUseCase = new ListAutomobileUseCase(automobileRepository);
 
 export class AutomobileController {
 	static async createAutomobile(req: Request, res: Response) {
-		const { brand, color, plate } = req.body;
-		const automobile = await createAutomobileUseCase.handle({ brand, color, plate });
+		const automobile = await createAutomobileUseCase.handle(req.body);
 		return response.created(res, automobile);
 	}
 
@@ -33,14 +32,12 @@ export class AutomobileController {
 
 	static async updateAutomobile(req: Request, res: Response) {
 		const { id } = req.params;
-		const { brand, color, plate } = req.body;
-		await updateAutomobileUseCase.handle({ id, props: { brand, color, plate } });
+		await updateAutomobileUseCase.handle({ ...req.body, id });
 		return response.ok(res, { message: 'Automobile updated successfully' });
 	}
 
 	static async listAutomobiles(req: Request, res: Response) {
-		const { brand, color, plate, page, limit } = req.query as { brand?: string, color?: string, plate?: string, page?: number, limit?: number };
-		const automobiles = await listAutomobileUseCase.handle({ filters: { brand, color, plate, page, limit } });
+		const automobiles = await listAutomobileUseCase.handle(req.query);
 		return response.ok(res, automobiles);
 	}
 

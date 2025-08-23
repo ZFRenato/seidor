@@ -1,11 +1,14 @@
-import { Automobile } from "../../../domain/entities/Automobile";
 import { NotFoundError } from "../../../domain/error/AppError";
 import { IAutomobileRepository } from "../../../domain/repositories/AutomobileRepository";
 import { GetByIdAutomobileUseCase } from "./GetByIdAutomobileUseCase";
+import { updateAutomobileSchema } from "./automobileSchemaInput";
+import { validator } from "../../../domain/validation";
 
-interface UpdateAutomobileUseCaseDTO {
+interface DTO {
 	id: string;
-	props: Partial<Automobile>;
+	brand?: string;
+	color?: string;
+	plate?: string;
 }
 
 export class UpdateAutomobileUseCase {
@@ -14,11 +17,13 @@ export class UpdateAutomobileUseCase {
 		private getByIdAutomobileUseCase: GetByIdAutomobileUseCase,
 	) {}
 
-	async handle(args: UpdateAutomobileUseCaseDTO): Promise<void> {
-		const automobile = await this.getByIdAutomobileUseCase.handle(args);
+	async handle(args: DTO): Promise<void> {
+		const validatedData = await validator(updateAutomobileSchema, args);
+		const { id, ...props } = validatedData;
+		const automobile = await this.getByIdAutomobileUseCase.handle({ id });
 		if (!automobile) {
 			throw new NotFoundError('Automobile not found');
 		}
-		await this.automobileRepository.update(args.id, args.props);
+		await this.automobileRepository.update(id, props);
 	}
 }

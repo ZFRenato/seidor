@@ -1,8 +1,10 @@
 import { NotFoundError } from "../../../domain/error/AppError";
 import { IAutomobileRepository } from "../../../domain/repositories/AutomobileRepository";
 import { GetByIdAutomobileUseCase } from "./GetByIdAutomobileUseCase";
+import { deleteAutomobileSchema } from "./automobileSchemaInput";
+import { validator } from "../../../domain/validation";
 
-interface DeleteAutomobileUseCaseDTO {
+interface DTO {
 	id: string;
 }
 
@@ -12,11 +14,12 @@ export class DeleteAutomobileUseCase {
 		private getByIdAutomobileUseCase: GetByIdAutomobileUseCase
 	) {}
 
-	async handle(args: DeleteAutomobileUseCaseDTO): Promise<void> {
-		const automobile = await this.getByIdAutomobileUseCase.handle(args);
+	async handle(args: DTO): Promise<void> {
+		const validatedData = await validator(deleteAutomobileSchema, args);
+		const automobile = await this.getByIdAutomobileUseCase.handle(validatedData);
 		if (!automobile) {
 			throw new NotFoundError('Automobile not found');
 		}
-		await this.automobileRepository.delete(args.id);
+		await this.automobileRepository.delete(validatedData.id);
 	}
 }
