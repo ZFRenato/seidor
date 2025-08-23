@@ -2,6 +2,8 @@ import express, { Express, Router } from 'express';
 import cors from 'cors';
 import { errorJson } from './middlewares/errorJson';
 import { errorHttp } from './middlewares/errorHttp';
+import swaggerUi from 'swagger-ui-express';
+import { openapiDoc } from './docs/openapi';
 
 export class App {
   constructor(
@@ -17,6 +19,8 @@ export class App {
   
   private routes(): void {
     this.express.use('/api/v1', this.router);
+    this.express.get('/openapi.json', (_req, res) => res.json(openapiDoc));
+    this.express.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDoc));
   }
   
   private middlewares(): void {

@@ -1,4 +1,5 @@
 # Seidor - API de Gestão de Motoristas, Veículos e Alocações
+## Teste Tecnico Seidor
 
 API Node.js/TypeScript para gerenciar motoristas, automóveis e alocações (vinculação motorista x veículo), com validações via Joi, arquitetura em camadas e persistência em memória para simplificar a execução local e testes.
 
@@ -61,6 +62,10 @@ npm install
 npm run dev
 ```
 O servidor sobe por padrão em `http://localhost:3000`.
+
+### Documentação (Swagger)
+- UI: acesse `http://localhost:3000/docs`
+- Esquema OpenAPI (JSON): `http://localhost:3000/openapi.json`
 
 - Build e start em produção:
 ```bash
