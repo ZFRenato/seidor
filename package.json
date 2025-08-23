@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node dist/App.js",
     "dev": "ts-node-dev --respawn --transpile-only src/App.ts",
-    "lint": "eslint 'src/**/*.ts'"
+    "lint": "eslint 'src/**/*.ts'",
+    "seed": "ts-node-dev --respawn --transpile-only src/seed.ts"
   },
   "author": "Renato Carvalho",
   "license": "ISC",
