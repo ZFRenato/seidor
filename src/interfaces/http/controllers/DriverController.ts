@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { response } from '../util/responseHttp';
-import { NotFoundError } from '../../../domain/error/AppError';
 import { CreateDriverUseCase } from '../../../application/useCases/drivers/CreateDriverUseCase';
 import { GetDriverByIdUseCase } from '../../../application/useCases/drivers/GetDriverByIdUseCase';
 import { DeleteDriverUseCase } from '../../../application/useCases/drivers/DeleteDriverUseCase';
@@ -17,53 +16,31 @@ const listDriverUseCase = new ListDriverUseCase(driverRepository);
 
 export class DriverController {
 	static async createDriver(req: Request, res: Response) {
-		const { name } = req.body;
-		try {
-			const driver = await createDriverUseCase.handle(name);
-			return response.created(res, driver);
-		} catch (error) {
-			return response.internalServerError(res, error);
-		}
+		const driver = await createDriverUseCase.handle(req.body);
+		return response.created(res, driver);
 	}
 	static async deleteDriver(req: Request, res: Response) {
 		const { id } = req.params;
-			await deleteDriverUseCase.handle(id);
-			return response.ok(res, { message: `Driver ${id} deleted successfully` });
+		await deleteDriverUseCase.handle({ id });
+		return response.ok(res, { message: `Driver ${id} deleted successfully` });
 	}
 	static async getDriverById(req: Request, res: Response) {
 		const { id } = req.params;
-		try {
-			const driver = await getDriverByIdUseCase.handle(id);
-			if (!driver) {
-				return response.notFound(res, { message: `Driver ${id} not found` });
-			}
-			return response.ok(res, driver);
-		} catch (error) {
-			return response.internalServerError(res, error);
+		const driver = await getDriverByIdUseCase.handle({ id });
+		if (!driver) {
+			return response.notFound(res, { message: `Driver ${id} not found` });
 		}
+		return response.ok(res, driver);
 	}
 	static async updateDriver(req: Request, res: Response) {
 		const { id } = req.params;
 		const { name } = req.body;
-		try {
-			await updateDriverUseCase.handle({ id, props: { name } });
-			return response.ok(res, { message: `Driver ${id} updated successfully` });
-		} catch (error) {
-			if (error instanceof NotFoundError) {
-				return response.notFound(res, { message: error.message });
-			} else {
-				return response.internalServerError(res, error);
-			}
-		}
+		await updateDriverUseCase.handle({ id, name });
+		return response.ok(res, { message: `Driver ${id} updated successfully` });
 	}
 
 	static async listDrivers(req: Request, res: Response) {
-		const { name, page, limit } = req.query as { name?: string, page?: number, limit?: number };
-		try {
-			const drivers = await listDriverUseCase.handle({ name, page, limit });
-			return response.ok(res, drivers);
-		} catch (error) {
-			return response.internalServerError(res, error);
-		}
+		const drivers = await listDriverUseCase.handle(req.query);
+		return response.ok(res, drivers);
 	}
 }

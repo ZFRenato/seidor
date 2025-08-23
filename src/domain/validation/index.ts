@@ -9,7 +9,7 @@ const validator = async <D>(
 		const value = await schema.validateAsync(data, { stripUnknown: true });
 		return value;
 	} catch (error) {
-		throw new BadRequestError(error.message);
+		throw new BadRequestError(error instanceof Error ? error.message : 'Invalid data');
 	}
 };
 
