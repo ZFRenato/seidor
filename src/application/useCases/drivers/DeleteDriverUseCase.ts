@@ -22,7 +22,7 @@ export class DeleteDriverUseCase {
 		if (!driver) {
 			throw new NotFoundError('Driver not found');
 		}
-		const isAlreadyAllocated = await this.allocationRepository.findByAllocationByAutomobileIdInProgress(validatedData.id);
+		const isAlreadyAllocated = await this.allocationRepository.findByAllocationByDriverIdInProgress(validatedData.id);
 		if (isAlreadyAllocated) {
 			throw new BadRequestError('Driver is already allocated to an automobile, please finish the allocation before deleting the driver');
 		}
