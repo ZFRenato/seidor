@@ -3,7 +3,6 @@ services:
   api:
     build: .
     image: seidor-api:latest
-    container_name: seidor-api
     ports:
       - "3000:3000"
     environment:

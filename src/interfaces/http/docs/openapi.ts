@@ -1,6 +1,6 @@
-import { OpenAPIV3_1 } from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types';
 
-export const openapiDoc: OpenAPIV3_1.Document = {
+export const openapiDoc: OpenAPIV3.Document = {
 	openapi: '3.0.3',
 	info: {
 		title: 'Seidor API',
