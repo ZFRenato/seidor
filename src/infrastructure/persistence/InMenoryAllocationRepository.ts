@@ -44,7 +44,7 @@ export class InMemoryAllocationRepository implements IAllocationRepository {
 					const allocationValue = allocation[key as keyof Allocation];
 					if (allocationValue && typeof allocationValue === 'object') {
 						return Object.entries(value).every(([subKey, subValue]) => {
-							// @ts-ignore
+							// @ts-ignore: dynamic nested property access for filter comparison
 							return allocationValue[subKey] === subValue;
 						});
 					}

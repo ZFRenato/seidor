@@ -1,4 +1,3 @@
-import { Driver } from "../../../domain/entities/Driver";
 import { NotFoundError } from "../../../domain/error/AppError";
 import { IDriverRepository } from "../../../domain/repositories/DriverRepository";
 import { GetDriverByIdUseCase } from "./GetDriverByIdUseCase";

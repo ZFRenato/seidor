@@ -17,12 +17,12 @@ export async function runSeed(): Promise<void> {
 	// Drivers
 	const driverAlice = await createDriver.handle({ name: 'Alice' });
 	const driverBob = await createDriver.handle({ name: 'Bob' });
-	const driverCarol = await createDriver.handle({ name: 'Carol' });
+	const _driverCarol = await createDriver.handle({ name: 'Carol' });
 
 	// Automobiles
 	const autoUno = await createAutomobile.handle({ brand: 'Fiat', color: 'Prata', plate: 'ABC1D23' });
 	const autoGol = await createAutomobile.handle({ brand: 'VW', color: 'Preto', plate: 'EFG4H56' });
-	const autoOnix = await createAutomobile.handle({ brand: 'GM', color: 'Branco', plate: 'IJK7L89' });
+	const _autoOnix = await createAutomobile.handle({ brand: 'GM', color: 'Branco', plate: 'IJK7L89' });
 
 	// Allocation válida (um em progresso)
 	await createAllocation.handle({ driverId: driverAlice.id, automobileId: autoUno.id, description: 'Entrega centro' });

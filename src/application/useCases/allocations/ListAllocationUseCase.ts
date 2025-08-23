@@ -24,8 +24,8 @@ export class ListAllocationUseCase {
 		const { driverName, automobilePlate, ...rest } = validatedData;
 		return this.allocationRepository.list({
 			...rest,
-			...(args.driverName && { driver: { name: args.driverName } as Driver }),
-			...(args.automobilePlate && { automobile: { plate: args.automobilePlate } as Automobile }),
+			...(driverName && { driver: { name: driverName } as Driver }),
+			...(automobilePlate && { automobile: { plate: automobilePlate } as Automobile }),
 		});
 	}
 }
