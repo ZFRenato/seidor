@@ -94,6 +94,28 @@ A suíte cobre 100% dos casos de uso e validações principais.
 npm run lint
 ```
 
+## Docker
+
+### Build da imagem
+```bash
+docker build -t seidor-api:latest .
+```
+
+### Executar o container
+```bash
+docker run --name seidor-api -p 3000:3000 -e NODE_ENV=development -e PORT=3000 seidor-api:latest
+```
+
+### Docker Compose
+```bash
+docker compose up --build
+```
+
+Após subir:
+- API: `http://localhost:3000/api/v1`
+- Swagger UI: `http://localhost:3000/docs`
+- OpenAPI JSON: `http://localhost:3000/openapi.json`
+
 ## Variáveis de Ambiente
 - `PORT`: porta do servidor HTTP (padrão: 3000)
 - `NODE_ENV`: define se o seed roda automaticamente (`production` desabilita o seed automático)
