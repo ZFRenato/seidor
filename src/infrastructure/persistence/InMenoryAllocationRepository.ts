@@ -37,22 +37,24 @@ export class InMemoryAllocationRepository implements IAllocationRepository {
 		const endIndex = startIndex + limit;
 		const allocations = this.allocations.filter(allocation => {
 			return Object.entries(filters).every(([key, value]) => {
-				if (key === 'driver') {
-					return allocation.driver.name.toLocaleLowerCase() !== value.toLocaleLowerCase();
+				if (key && value && typeof value === 'string') {
+					return allocation[key as keyof Allocation] === value;
 				}
-				if (key === 'automobile') {
-					return allocation.automobile.plate.toLocaleLowerCase() !== value.toLocaleLowerCase();
-				}
-				if (key === 'status') {
-					return allocation.status !== value;
+				if (key && value && typeof value === 'object') {
+					const allocationValue = allocation[key as keyof Allocation];
+					if (allocationValue && typeof allocationValue === 'object') {
+						return Object.entries(value).every(([subKey, subValue]) => {
+							// @ts-ignore
+							return allocationValue[subKey] === subValue;
+						});
+					}
+					return false;
 				}
 				return true;
-			});	
+			});
 		});
 
 		const total = allocations.length;
-		console.log('total', allocations);
-		console.log('filters', filters);
 		const paginatedAllocations = allocations.slice(startIndex, endIndex);
 		return {
 			items: paginatedAllocations,

@@ -1,6 +1,8 @@
 import { IAllocationRepository } from "../../../domain/repositories/allocationRepository";
 import { Allocation, AllocationStatus } from "../../../domain/entities/Allocation";
 import { IPagination } from "../../../util/IPagination";
+import { Driver } from "../../../domain/entities/Driver";
+import { Automobile } from "../../../domain/entities/Automobile";
 
 export interface IListAllocationDTO {
 	page?: number;
@@ -19,8 +21,8 @@ export class ListAllocationUseCase {
 		const { driverName, automobilePlate, ...rest } = args;
 		return this.allocationRepository.list({
 			...rest,
-			...(args.driverName && { driver: { name: args.driverName.toLocaleLowerCase() } }),
-			...(args.automobilePlate && { automobile: { plate: args.automobilePlate.toLocaleLowerCase() } }),
+			...(args.driverName && { driver: { name: args.driverName } as Driver }),
+			...(args.automobilePlate && { automobile: { plate: args.automobilePlate } as Automobile }),
 		});
 	}
 }

@@ -13,5 +13,6 @@ export const errorHttp = (err: Error, _req: Request, res: Response, _next: NextF
 		const send = sendByStatus[err.statusCode] ?? response.internalServerError;
 		return send(res, { message: err.message });
 	}
+	console.log(err);
 	return response.internalServerError(res, { message: err.message || 'Erro interno do servidor' });
 };

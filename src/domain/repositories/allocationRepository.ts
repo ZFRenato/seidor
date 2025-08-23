@@ -1,10 +1,7 @@
 import { IPagination } from "../../util/IPagination";
-import { Allocation, AllocationStatus } from "../entities/Allocation";
-import { Automobile } from "../entities/Automobile";
-import { Driver } from "../entities/Driver";
+import { Allocation } from "../entities/Allocation";
 
-export interface IFiltersListAllocations extends Partial<Driver>, Partial<Automobile> {
-	status?: AllocationStatus;
+export interface IFiltersListAllocations extends Partial<Omit<Allocation, 'startDate' | 'endDate'>> {
 	page?: number;
 	limit?: number;
 }
