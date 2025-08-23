@@ -3,8 +3,10 @@ import { Allocation, AllocationStatus } from "../../../domain/entities/Allocatio
 import { IPagination } from "../../../util/IPagination";
 import { Driver } from "../../../domain/entities/Driver";
 import { Automobile } from "../../../domain/entities/Automobile";
+import { listAllocationSchema } from "./allocationSchemaImput";
+import { validator } from "../../../domain/validation";
 
-export interface IListAllocationDTO {
+export interface DTO {
 	page?: number;
 	limit?: number;
 	driverName?: string;
@@ -17,8 +19,9 @@ export class ListAllocationUseCase {
 		private readonly allocationRepository: IAllocationRepository
 	) {}
 
-	async handle(args: IListAllocationDTO): Promise<IPagination<Allocation>> {
-		const { driverName, automobilePlate, ...rest } = args;
+	async handle(args: DTO): Promise<IPagination<Allocation>> {
+		const validatedData = await validator(listAllocationSchema, args);
+		const { driverName, automobilePlate, ...rest } = validatedData;
 		return this.allocationRepository.list({
 			...rest,
 			...(args.driverName && { driver: { name: args.driverName } as Driver }),

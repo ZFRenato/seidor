@@ -1,9 +1,11 @@
 import { IAllocationRepository } from "../../../domain/repositories/allocationRepository";
 import { Allocation, AllocationStatus } from "../../../domain/entities/Allocation";
 import { BadRequestError, NotFoundError } from "../../../domain/error/AppError";
+import { finishAllocationSchema } from "./allocationSchemaImput";
+import { validator } from "../../../domain/validation";
 
-export interface IFinishAllocationDTO {
-	allocationId: string;
+export interface DTO {
+	id: string;
 }
 
 export class FinishAllocationUseCase {
@@ -11,8 +13,9 @@ export class FinishAllocationUseCase {
 		private readonly allocationRepository: IAllocationRepository
 	) {}
 
-	async handle(args: IFinishAllocationDTO): Promise<Allocation> {
-		const allocation = await this.allocationRepository.getById(args.allocationId);
+	async handle(args: DTO): Promise<Allocation> {
+		const { id } = await validator(finishAllocationSchema, args);
+		const allocation = await this.allocationRepository.getById(id);
 		if (!allocation) {
 			throw new NotFoundError('Allocation not found');
 		}
@@ -21,7 +24,7 @@ export class FinishAllocationUseCase {
 		}
 		allocation.status = AllocationStatus.FINISHED;
 		allocation.endDate = new Date();
-		await this.allocationRepository.update(args.allocationId, allocation);
+		await this.allocationRepository.update(id, allocation);
 		return allocation;
 	}
 }

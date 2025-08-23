@@ -6,7 +6,6 @@ import { ListAllocationUseCase } from '../../../application/useCases/allocations
 import { InMemoryAllocationRepository } from '../../../infrastructure/persistence/InMenoryAllocationRepository';
 import { InMemoryAutomobileRepository } from '../../../infrastructure/persistence/InMemoryAutomobileRepository';
 import { InMemoryDriverRepository } from '../../../infrastructure/persistence/InMenoryDriverRepository';
-import { AllocationStatus } from '../../../domain/entities/Allocation';
 
 const allocationRepository = InMemoryAllocationRepository.getInstance();
 const createAllocationUseCase = new CreateAllocationUseCase(
@@ -19,21 +18,18 @@ const listAllocationUseCase = new ListAllocationUseCase(InMemoryAllocationReposi
 
 export class AllocationController {
 	static async createAllocation(req: Request, res: Response) {
-		const { driverId, automobileId, description } = req.body;
-			const allocation = await createAllocationUseCase.handle({ driverId, automobileId, description });
+			const allocation = await createAllocationUseCase.handle(req.body);
 			return response.created(res, allocation);
 	}
 
 	static async finishAllocation(req: Request, res: Response) {
 		const { id } = req.params;
-			const allocation = await finishAllocationUseCase.handle({ allocationId: id });
+			const allocation = await finishAllocationUseCase.handle({ id });
 			return response.ok(res, allocation);
 	}
 
 	static async listAllocations(req: Request, res: Response) {
-		const { page, limit, driverName, automobilePlate, status } = req.query as { page?: number, limit?: number, driverName?: string, automobilePlate?: string, status?: AllocationStatus };
-
-			const allocations = await listAllocationUseCase.handle({ page, limit, driverName, automobilePlate, status });
+		const allocations = await listAllocationUseCase.handle(req.query);
 			return response.ok(res, allocations);
 	}
 }
