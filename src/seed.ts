@@ -15,9 +15,9 @@ export async function runSeed(): Promise<void> {
 	const createAllocation = new CreateAllocationUseCase(allocationRepo, driverRepo, autoRepo);
 
 	// Drivers
-	const driverAlice = await createDriver.handle('Alice');
-	const driverBob = await createDriver.handle('Bob');
-	const driverCarol = await createDriver.handle('Carol');
+	const driverAlice = await createDriver.handle({ name: 'Alice' });
+	const driverBob = await createDriver.handle({ name: 'Bob' });
+	const driverCarol = await createDriver.handle({ name: 'Carol' });
 
 	// Automobiles
 	const autoUno = await createAutomobile.handle({ brand: 'Fiat', color: 'Prata', plate: 'ABC1D23' });
