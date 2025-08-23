@@ -8,7 +8,7 @@ import { InMemoryDriverRepository } from '../../../infrastructure/persistence/In
 import { UpdateDriverUseCase } from '../../../application/useCases/drivers/UpdateDriverUseCase';
 import { ListDriverUseCase } from '../../../application/useCases/drivers/ListDriverUseCase';
 
-const driverRepository = new InMemoryDriverRepository();
+const driverRepository = InMemoryDriverRepository.getInstance();
 const getDriverByIdUseCase = new GetDriverByIdUseCase(driverRepository);
 const createDriverUseCase = new CreateDriverUseCase(driverRepository);
 const deleteDriverUseCase = new DeleteDriverUseCase(driverRepository, getDriverByIdUseCase);
@@ -20,21 +20,21 @@ export class DriverController {
 		const { name } = req.body;
 		try {
 			const driver = await createDriverUseCase.handle(name);
-			response.created(res, driver);
+			return response.created(res, driver);
 		} catch (error) {
-			response.internalServerError(res, error);
+			return response.internalServerError(res, error);
 		}
 	}
 	static async deleteDriver(req: Request, res: Response) {
 		const { id } = req.params;
 		try {
 			await deleteDriverUseCase.handle(id);
-			response.ok(res, { message: `Driver ${id} deleted successfully` });
+			return response.ok(res, { message: `Driver ${id} deleted successfully` });
 		} catch (error) {
 			if (error instanceof NotFoundError) {
-				response.notFound(res, { message: error.message });
+				return response.notFound(res, { message: error.message });
 			} else {
-				response.internalServerError(res, error);
+				return response.internalServerError(res, error);
 			}
 		}
 	}
@@ -43,11 +43,11 @@ export class DriverController {
 		try {
 			const driver = await getDriverByIdUseCase.handle(id);
 			if (!driver) {
-				response.notFound(res, { message: `Driver ${id} not found` });
+				return response.notFound(res, { message: `Driver ${id} not found` });
 			}
-			response.ok(res, driver);
+			return response.ok(res, driver);
 		} catch (error) {
-			response.internalServerError(res, error);
+			return response.internalServerError(res, error);
 		}
 	}
 	static async updateDriver(req: Request, res: Response) {
@@ -55,23 +55,23 @@ export class DriverController {
 		const { name } = req.body;
 		try {
 			await updateDriverUseCase.handle({ id, props: { name } });
-			response.ok(res, { message: `Driver ${id} updated successfully` });
+			return response.ok(res, { message: `Driver ${id} updated successfully` });
 		} catch (error) {
 			if (error instanceof NotFoundError) {
-				response.notFound(res, { message: error.message });
+				return response.notFound(res, { message: error.message });
 			} else {
-				response.internalServerError(res, error);
+				return response.internalServerError(res, error);
 			}
 		}
 	}
-	
+
 	static async listDrivers(req: Request, res: Response) {
 		const { name, page, limit } = req.query as { name?: string, page?: number, limit?: number };
 		try {
 			const drivers = await listDriverUseCase.handle({ name, page, limit });
-			response.ok(res, drivers);
+			return response.ok(res, drivers);
 		} catch (error) {
-			response.internalServerError(res, error);
+			return response.internalServerError(res, error);
 		}
 	}
 }

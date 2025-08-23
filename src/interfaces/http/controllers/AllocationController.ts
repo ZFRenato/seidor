@@ -9,28 +9,28 @@ import { InMemoryDriverRepository } from '../../../infrastructure/persistence/In
 import { AllocationStatus } from '../../../domain/entities/Allocation';
 import { BadRequestError, NotFoundError } from '../../../domain/error/AppError';
 
-const allocationRepository = new InMemoryAllocationRepository();
+const allocationRepository = InMemoryAllocationRepository.getInstance();
 const createAllocationUseCase = new CreateAllocationUseCase(
 	allocationRepository,
-	new InMemoryDriverRepository(),
-	new InMemoryAutomobileRepository(),
+	InMemoryDriverRepository.getInstance(),
+	InMemoryAutomobileRepository.getInstance(),
 );
-const finishAllocationUseCase = new FinishAllocationUseCase(new InMemoryAllocationRepository());
-const listAllocationUseCase = new ListAllocationUseCase(new InMemoryAllocationRepository());
+const finishAllocationUseCase = new FinishAllocationUseCase(InMemoryAllocationRepository.getInstance());
+const listAllocationUseCase = new ListAllocationUseCase(InMemoryAllocationRepository.getInstance());
 
 export class AllocationController {
 	static async createAllocation(req: Request, res: Response) {
 		const { driverId, automobileId, description } = req.body;
 		try {
 			const allocation = await createAllocationUseCase.handle({ driverId, automobileId, description });
-			response.created(res, allocation);			
+			return response.created(res, allocation);			
 		} catch (error) {
 			if (error instanceof BadRequestError) {
-				response.badRequest(res, error.message);
+				return response.badRequest(res, error.message);
 			} else if (error instanceof NotFoundError) {
-				response.notFound(res, error.message);
+				return response.notFound(res, error.message);
 			} else {
-				response.internalServerError(res, error.message);
+				return response.internalServerError(res, error.message);
 			}
 		}
 	}
@@ -39,14 +39,14 @@ export class AllocationController {
 		const { id } = req.params;
 		try {
 			const allocation = await finishAllocationUseCase.handle({ allocationId: id });
-			response.ok(res, allocation);
+			return response.ok(res, allocation);
 		} catch (error) {
 			if (error instanceof BadRequestError) {
-				response.badRequest(res, error.message);
+				return response.badRequest(res, error.message);
 			} else if (error instanceof NotFoundError) {
-				response.notFound(res, error.message);
+				return response.notFound(res, error.message);
 			} else {
-				response.internalServerError(res, error.message);
+				return response.internalServerError(res, error.message);
 			}
 		}
 	}
@@ -55,9 +55,9 @@ export class AllocationController {
 		const { page, limit, driverName, automobilePlate, status } = req.query as { page?: number, limit?: number, driverName?: string, automobilePlate?: string, status?: AllocationStatus };
 		try {
 			const allocations = await listAllocationUseCase.handle({ page, limit, driverName, automobilePlate, status });
-			response.ok(res, allocations);
+			return response.ok(res, allocations);
 		} catch (error) {
-			response.internalServerError(res, error.message);
+			return response.internalServerError(res, error.message);
 		}
 	}
 }

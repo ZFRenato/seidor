@@ -20,6 +20,7 @@ export class FinishAllocationUseCase {
 			throw new BadRequestError('Allocation is already finished');
 		}
 		allocation.status = AllocationStatus.FINISHED;
+		allocation.endDate = new Date();
 		await this.allocationRepository.update(args.allocationId, allocation);
 		return allocation;
 	}

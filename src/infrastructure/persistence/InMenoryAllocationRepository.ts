@@ -5,6 +5,14 @@ import { IPagination } from "../../util/IPagination";
 
 export class InMemoryAllocationRepository implements IAllocationRepository {
 	private allocations: Allocation[] = [];
+	private static instance: InMemoryAllocationRepository;
+	private constructor() {}
+	public static getInstance(): InMemoryAllocationRepository {
+		if (!InMemoryAllocationRepository.instance) {
+			InMemoryAllocationRepository.instance = new InMemoryAllocationRepository();
+		}
+		return InMemoryAllocationRepository.instance;
+	}
 
 	async create(allocation: Allocation): Promise<void> {
 		this.allocations.push(allocation);
@@ -28,10 +36,23 @@ export class InMemoryAllocationRepository implements IAllocationRepository {
 		const startIndex = (page - 1) * limit;
 		const endIndex = startIndex + limit;
 		const allocations = this.allocations.filter(allocation => {
-			return Object.entries(filters).every(([key, value]) => allocation[key as keyof Allocation] === value);
+			return Object.entries(filters).every(([key, value]) => {
+				if (key === 'driver') {
+					return allocation.driver.name.toLocaleLowerCase() !== value.toLocaleLowerCase();
+				}
+				if (key === 'automobile') {
+					return allocation.automobile.plate.toLocaleLowerCase() !== value.toLocaleLowerCase();
+				}
+				if (key === 'status') {
+					return allocation.status !== value;
+				}
+				return true;
+			});	
 		});
 
 		const total = allocations.length;
+		console.log('total', allocations);
+		console.log('filters', filters);
 		const paginatedAllocations = allocations.slice(startIndex, endIndex);
 		return {
 			items: paginatedAllocations,

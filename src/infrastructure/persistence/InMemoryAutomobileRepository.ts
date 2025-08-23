@@ -4,6 +4,14 @@ import { IPagination } from "../../util/IPagination";
 
 export class InMemoryAutomobileRepository implements IAutomobileRepository {
 	private automobiles: Automobile[] = [];
+	private static instance: InMemoryAutomobileRepository;
+	private constructor() {}
+	public static getInstance(): InMemoryAutomobileRepository {
+		if (!InMemoryAutomobileRepository.instance) {
+			InMemoryAutomobileRepository.instance = new InMemoryAutomobileRepository();
+		}
+		return InMemoryAutomobileRepository.instance;
+	}
 
 	async create(automobile: Automobile): Promise<Automobile> {
 		this.automobiles.push(automobile);

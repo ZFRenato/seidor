@@ -19,8 +19,8 @@ export class ListAllocationUseCase {
 		const { driverName, automobilePlate, ...rest } = args;
 		return this.allocationRepository.list({
 			...rest,
-			...(args.driverName && { driver: { name: args.driverName } }),
-			...(args.automobilePlate && { automobile: { plate: args.automobilePlate } }),
+			...(args.driverName && { driver: { name: args.driverName.toLocaleLowerCase() } }),
+			...(args.automobilePlate && { automobile: { plate: args.automobilePlate.toLocaleLowerCase() } }),
 		});
 	}
 }

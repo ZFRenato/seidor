@@ -8,7 +8,7 @@ import { ListAutomobileUseCase } from '../../../application/useCases/automobiles
 import { InMemoryAutomobileRepository } from '../../../infrastructure/persistence/InMemoryAutomobileRepository';
 import { NotFoundError } from '../../../domain/error/AppError';
 
-const automobileRepository = new InMemoryAutomobileRepository();
+const automobileRepository = InMemoryAutomobileRepository.getInstance();
 const getByIdAutomobileUseCase = new GetByIdAutomobileUseCase(automobileRepository);
 const createAutomobileUseCase = new CreateAutomobileUseCase(automobileRepository);
 const deleteAutomobileUseCase = new DeleteAutomobileUseCase(automobileRepository, getByIdAutomobileUseCase);
@@ -19,16 +19,16 @@ export class AutomobileController {
 	static async createAutomobile(req: Request, res: Response) {
 		const { brand, color, plate } = req.body;
 		const automobile = await createAutomobileUseCase.handle({ brand, color, plate });
-		response.created(res, automobile);
+		return response.created(res, automobile);
 	}
 
 	static async getAutomobileById(req: Request, res: Response) {
 		const { id } = req.params;
 		const automobile = await getByIdAutomobileUseCase.handle({ id });
 		if (!automobile) {
-			response.notFound(res, { message: 'Automobile not found' });
+			return response.notFound(res, { message: 'Automobile not found' });
 		}
-		response.ok(res, automobile);
+		return response.ok(res, automobile);
 	}
 
 	static async updateAutomobile(req: Request, res: Response) {
@@ -36,12 +36,12 @@ export class AutomobileController {
 		const { brand, color, plate } = req.body;
 		try {
 			await updateAutomobileUseCase.handle({ id, props: { brand, color, plate } });
-			response.ok(res, { message: 'Automobile updated successfully' });
+			return response.ok(res, { message: 'Automobile updated successfully' });
 		} catch (error) {
 			if (error instanceof NotFoundError) {
-				response.notFound(res, { message: error.message });
+				return response.notFound(res, { message: error.message });
 			} else {
-				response.internalServerError(res, error);
+				return response.internalServerError(res, error);
 			}
 		}
 	}
@@ -49,19 +49,19 @@ export class AutomobileController {
 	static async listAutomobiles(req: Request, res: Response) {
 		const { brand, color, plate, page, limit } = req.query as { brand?: string, color?: string, plate?: string, page?: number, limit?: number };
 		const automobiles = await listAutomobileUseCase.handle({ filters: { brand, color, plate, page, limit } });
-		response.ok(res, automobiles);
+		return response.ok(res, automobiles);
 	}
 
 	static async deleteAutomobile(req: Request, res: Response) {
 		const { id } = req.params;	
 		try {
 			await deleteAutomobileUseCase.handle({ id });
-			response.ok(res, { message: 'Automobile deleted successfully' });
+			return response.ok(res, { message: 'Automobile deleted successfully' });
 		} catch (error) {
 			if (error instanceof NotFoundError) {
-				response.notFound(res, { message: error.message });
+				return response.notFound(res, { message: error.message });
 			} else {
-				response.internalServerError(res, error);
+				return response.internalServerError(res, error);
 			}
 		}
 	}

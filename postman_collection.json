@@ -1,0 +1,195 @@
+{
+  "info": {
+    "name": "Seidor API - Coleção",
+    "_postman_id": "seidor-api-collection",
+    "description": "Coleção de endpoints da API com exemplos de requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Drivers",
+      "item": [
+        {
+          "name": "Criar Driver",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/drivers",
+              "host": ["{{baseUrl}}"],
+              "path": ["drivers"]
+            }
+          }
+        },
+        {
+          "name": "Listar Drivers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/drivers?name=Jo&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["drivers"],
+              "query": [
+                {"key": "name", "value": "Jo"},
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obter Driver por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/drivers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["drivers", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Driver",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/drivers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["drivers", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Excluir Driver",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/drivers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["drivers", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Automobiles",
+      "item": [
+        {
+          "name": "Criar Automóvel",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"Toyota\",\n  \"color\": \"Prata\",\n  \"plate\": \"ABC-1234\"\n}"
+            },
+            "url": {"raw":"{{baseUrl}}/automobiles","host":["{{baseUrl}}"],"path":["automobiles"]}
+          }
+        },
+        {
+          "name": "Listar Automóveis",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/automobiles?brand=Toyota&color=Prata&plate=ABC-1234&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["automobiles"],
+              "query": [
+                {"key": "brand", "value": "Toyota"},
+                {"key": "color", "value": "Prata"},
+                {"key": "plate", "value": "ABC-1234"},
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obter Automóvel por ID",
+          "request": {
+            "method": "GET",
+            "url": {"raw":"{{baseUrl}}/automobiles/:id","host":["{{baseUrl}}"],"path":["automobiles",":id"]}
+          }
+        },
+        {
+          "name": "Atualizar Automóvel",
+          "request": {
+            "method": "PUT",
+            "header": [ {"key":"Content-Type","value":"application/json"} ],
+            "body": {"mode":"raw","raw":"{\n  \"brand\": \"Toyota\",\n  \"color\": \"Preto\",\n  \"plate\": \"DEF-5678\"\n}"},
+            "url": {"raw":"{{baseUrl}}/automobiles/:id","host":["{{baseUrl}}"],"path":["automobiles",":id"]}
+          }
+        },
+        {
+          "name": "Excluir Automóvel",
+          "request": {
+            "method": "DELETE",
+            "url": {"raw":"{{baseUrl}}/automobiles/:id","host":["{{baseUrl}}"],"path":["automobiles",":id"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Allocations",
+      "item": [
+        {
+          "name": "Criar Alocação",
+          "request": {
+            "method": "POST",
+            "header": [ {"key":"Content-Type","value":"application/json"} ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driverId\": \"<driver-uuid>\",\n  \"automobileId\": \"<automobile-uuid>\",\n  \"description\": \"Entrega zona norte\"\n}"
+            },
+            "url": {"raw":"{{baseUrl}}/allocations","host":["{{baseUrl}}"],"path":["allocations"]}
+          }
+        },
+        {
+          "name": "Finalizar Alocação",
+          "request": {
+            "method": "PUT",
+            "url": {"raw":"{{baseUrl}}/allocations/:id","host":["{{baseUrl}}"],"path":["allocations",":id"]}
+          }
+        },
+        {
+          "name": "Listar Alocações",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/allocations?page=1&limit=10&driverName=Joao_1&automobilePlate=ABC-1234&status=OPEN",
+              "host": ["{{baseUrl}}"],
+              "path": ["allocations"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"},
+                {"key": "driverName", "value": "Joao_1"},
+                {"key": "automobilePlate", "value": "ABC-1234"},
+                {"key": "status", "value": "OPEN"}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

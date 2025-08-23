@@ -4,7 +4,14 @@ import { IPagination } from "../../util/IPagination";
 
 export class InMemoryDriverRepository implements IDriverRepository {
 	private drivers: Driver[] = [];
-
+	private static instance: InMemoryDriverRepository;
+	private constructor() {}
+	public static getInstance(): InMemoryDriverRepository {
+		if (!InMemoryDriverRepository.instance) {
+			InMemoryDriverRepository.instance = new InMemoryDriverRepository();
+		}
+		return InMemoryDriverRepository.instance;
+	}
 	async create(driver: Driver): Promise<Driver> {
 		try {
 			const existingDriver = this.drivers.find(d => d.id === driver.id);
@@ -57,7 +64,7 @@ export class InMemoryDriverRepository implements IDriverRepository {
 			const skip = (page - 1) * limit;
 			const take = limit;
 
-			const filteredDrivers = this.drivers.filter(d => name ? d.name.includes(name) : true);
+			const filteredDrivers = this.drivers.filter(d => name ? d.name.includes(name.toLocaleLowerCase()) : true);
 			const total = filteredDrivers.length;
 			const items = filteredDrivers.slice(skip, skip + take);
 			return {
